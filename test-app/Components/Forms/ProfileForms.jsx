@@ -3,7 +3,7 @@ import React from 'react';
 const PersonalInfoInput = ({ title, onChange, values, errors }) => {
     return (
         <div>
-            <div className="mb-4">
+            <div className="mb-3">
                 <label htmlFor="nationalId" className="block mb-1">National ID Number *</label>
                 <input
                     type="text"
@@ -17,8 +17,8 @@ const PersonalInfoInput = ({ title, onChange, values, errors }) => {
                 {errors.nationalId && <small className="text-red-500">{errors.nationalId}</small>}
             </div>
 
-            <div className="mb-4">
-                <label htmlFor="name" className="block mb-1">Name *</label>
+            <div className="mb-3">
+                <label htmlFor="name" className="block mb-1">First Name *</label>
                 <input
                     type="text"
                     id="name"
@@ -31,7 +31,7 @@ const PersonalInfoInput = ({ title, onChange, values, errors }) => {
                 {errors.name && <small className="text-red-500">{errors.name}</small>}
             </div>
 
-            <div className="mb-4">
+            <div className="mb-3">
                 <label htmlFor="surname" className="block mb-1">Surname *</label>
                 <input
                     type="text"
@@ -45,7 +45,7 @@ const PersonalInfoInput = ({ title, onChange, values, errors }) => {
                 {errors.surname && <small className="text-red-500">{errors.surname}</small>}
             </div>
 
-            <div className="mb-4">
+            <div className="mb-3">
                 <label htmlFor="dateOfBirth" className="block mb-1">Date of Birth *</label>
                 <input
                     type="date"

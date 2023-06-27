@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import PersonalInfoInput from '@/Components/Forms/ProfileForms';
 import AuthButton from '@/Components/Button/AuthButton';
+import { collection, addDoc } from "firebase/firestore";
+import { db } from '@/app/firebase';
 
 const StudentInput = () => {
     const [studentData, setStudentData] = useState({
@@ -18,7 +20,7 @@ const StudentInput = () => {
         setStudentData({ ...studentData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         // Perform validation here and update the errors state
         const validationErrors = {};
@@ -51,6 +53,24 @@ const StudentInput = () => {
             // If there are no validation errors, submit the form
             console.log(studentData.nationalId);
         }
+        else {
+
+            try {
+                const docRef = await addDoc(collection(db, "students"),
+                    {
+                        DOB: studentData.dateOfBirth,
+                        firstName: studentData.name,
+                        nationalID: studentData.nationalId,
+                        phoneNumber: studentData.studentNumber,
+                        surName: studentData.surname
+                    }
+                );
+                console.log("Document written with ID: ", docRef.id);
+                console.log(studentData);
+            } catch (e) {
+                console.error("Error adding document: ", e);
+            }
+        }
     };
 
     return (
@@ -64,11 +84,11 @@ const StudentInput = () => {
                     errors={errors} // Pass the errors state to PersonalInfoInput
                 />
 
-                <div className="mb-4">
+                <div className="mb-3">
                     <label htmlFor="studentNumber" className="block mb-1">Student Number *</label>
                     <input
                         type="text"
-                        id="teacherNumber"
+                        id="studentNumber" // Fixed ID here
                         className={`w-full border rounded-md px-3 py-2 ${errors.studentNumber ? 'border-red-500' : 'border-gray-300'}`}
                         value={studentData.studentNumber}
                         onChange={handleChange}

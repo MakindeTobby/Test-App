@@ -1,10 +1,12 @@
 'use client'
 import AuthButton from '@/Components/Button/AuthButton';
 import PersonalInfoInput from '@/Components/Forms/ProfileForms';
+import Link from 'next/link';
 import { useState } from 'react';
 
 const TeacherInput = () => {
     const [teacherData, setTeacherData] = useState({
+        title: '',
         nationalId: '',
         name: '',
         surname: '',
@@ -43,6 +45,9 @@ const TeacherInput = () => {
             setErrors(validationErrors);
             return;
         }
+        else {
+            console.log(teacherData);
+        }
         // Submit the form
     };
 
@@ -50,9 +55,28 @@ const TeacherInput = () => {
         <div className="container mx-auto p-4 mt-4  max-w-lg shadow-md">
             <h1 className="text-2xl font-bold mb-4 text-center">Teacher Information</h1>
             <form onSubmit={handleSubmit} className="max-w-md mx-auto">
+                <div className="mb-3">
+                    <label htmlFor="title" className="block mb-1">Title *</label>
+
+                    <select className="block w-full px-2 py-3 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        value={teacherData.title}
+                        onChange={handleChange}
+                        id="title"
+                        name="title"
+                        required
+                    >
+                        <option hidden defaultValue>--Select Title--</option>
+                        <option value="Mr">Mr</option>
+                        <option value="Mrs">Mrs</option>
+                        <option value="Miss">Miss</option>
+                        <option value="Prof">Prof</option>
+
+                    </select>
+
+                </div>
                 <PersonalInfoInput title="Teacher" onChange={handleChange} values={teacherData} errors={errors} />
 
-                <div className="mb-4">
+                <div className="mb-3">
                     <label htmlFor="teacherNumber" className="block mb-1">Teacher Number *</label>
                     <input
                         type="text"
@@ -66,7 +90,7 @@ const TeacherInput = () => {
                     {errors.teacherNumber && <small className="text-red-500">{errors.teacherNumber}</small>}
                 </div>
 
-                <div className="mb-4">
+                <div className="mb-3">
                     <label htmlFor="salary" className="block mb-1">Salary</label>
                     <input
                         type="text"
@@ -81,6 +105,12 @@ const TeacherInput = () => {
                 <div className="flex justify-center">
                     <AuthButton title="Submit" />
                 </div>
+                <div className='mt-3 text-center'>
+                    <Link href={'/info/student'} className='font-bold'>
+                        Register as student
+                    </Link>
+                </div>
+                <br />
             </form>
         </div>
     );
