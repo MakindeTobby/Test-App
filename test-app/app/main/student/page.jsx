@@ -6,15 +6,15 @@ import { toast } from 'react-toastify';
 const StudentList = () => {
     const [students, setStudents] = useState([]);
 
+    const fetchData = async () => {
+        try {
+            const studentData = await fetchStudents();
+            setStudents(studentData);
+        } catch (error) {
+            console.error('Error fetching student:', error);
+        }
+    };
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const studentData = await fetchStudents();
-                setStudents(studentData);
-            } catch (error) {
-                console.error('Error fetching student:', error);
-            }
-        };
 
         fetchData();
     }, []);
@@ -22,6 +22,7 @@ const StudentList = () => {
         try {
             await deleteStudent(studentId);
             toast.success('Student deleted successfully');
+            fetchData();
         } catch (error) {
             console.error('Error deleting student:', error);
         }

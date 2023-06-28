@@ -50,7 +50,7 @@ const StudentInput = () => {
             const age = currentDate.getFullYear() - selectedDate.getFullYear();
 
             if (age > 22) {
-                validationErrors.dateOfBirth = 'Student must be at most 22 years old';
+                validationErrors.dateOfBirth = 'Student age must not be more than 22 years old';
             }
         }
         if (studentData.studentNumber.trim() === '') {
@@ -60,10 +60,12 @@ const StudentInput = () => {
         // Set the errors state
         setErrors(validationErrors);
 
-        if (Object.keys(validationErrors).length === 0) {
+        if (Object.keys(validationErrors).length > 0) {
             // If there are no validation errors, submit the form
-            console.log(studentData.nationalId);
+            setErrors(validationErrors);
+            return;
         }
+
         try {
             setLoading(true);
             // setErrors(null);

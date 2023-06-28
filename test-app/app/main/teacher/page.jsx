@@ -6,15 +6,15 @@ import { toast } from 'react-toastify';
 const TeacherList = () => {
     const [teachers, setTeachers] = useState([]);
 
+    const fetchData = async () => {
+        try {
+            const teacherData = await fetchTeacher();
+            setTeachers(teacherData);
+        } catch (error) {
+            console.error('Error fetching teachers:', error);
+        }
+    };
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const teacherData = await fetchTeacher();
-                setTeachers(teacherData);
-            } catch (error) {
-                console.error('Error fetching teachers:', error);
-            }
-        };
 
         fetchData();
     }, []);
@@ -22,6 +22,7 @@ const TeacherList = () => {
         try {
             await deleteTeacher(teacherId);
             toast.success('Teacher deleted successfully');
+            fetchData();
         } catch (error) {
             toast.error('Error deleting teacher:');
         }
