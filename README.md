@@ -30,11 +30,11 @@ The mock data server will be running at http://localhost:3001.
 
 ## Usage
 Teachers
-- To view the list of teachers, visit http://localhost:3000/main/teachers.
-- To add a new teacher, go to http://localhost:3000/info/teachers. fill in the required details in the form and click the "Submit" button.
+- To view the list of teachers, visit http://localhost:3000/main/teacher.
+- To add a new teacher, go to http://localhost:3000/info/teacher. fill in the required details in the form and click the "Submit" button.
 
 Students
-- To view the list of teachers, visit http://localhost:3000/main/students.
+- To view the list of teachers, visit http://localhost:3000/main/student.
 - To add a new student, go to http://localhost:3000/info/student. fill in the required details in the form and click the "Submit" button.
 
 ## Dependencies
