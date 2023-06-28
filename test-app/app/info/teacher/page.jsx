@@ -1,10 +1,14 @@
 'use client'
 import AuthButton from '@/Components/Button/AuthButton';
 import PersonalInfoInput from '@/Components/Forms/ProfileForms';
+import { createTeacher } from '@/api';
 import Link from 'next/link';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 const TeacherInput = () => {
+    const [loading, setLoading] = useState(false);
+
     const [teacherData, setTeacherData] = useState({
         title: '',
         nationalId: '',
@@ -21,7 +25,7 @@ const TeacherInput = () => {
         setTeacherData({ ...teacherData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         // Perform validation before submitting
@@ -38,6 +42,17 @@ const TeacherInput = () => {
         if (teacherData.teacherNumber.trim() === '') {
             validationErrors.teacherNumber = 'Number is required';
         }
+        if (teacherData.dateOfBirth.trim() === '') {
+            validationErrors.dateOfBirth = 'Date of Birth is required';
+        } else {
+            const currentDate = new Date();
+            const selectedDate = new Date(teacherData.dateOfBirth);
+            const age = currentDate.getFullYear() - selectedDate.getFullYear();
+
+            if (age < 21) {
+                validationErrors.dateOfBirth = 'Teacher must be at least 21 years old';
+            }
+        }
         // Add more validation rules as needed
 
         // If there are validation errors, set the errors state and return
@@ -45,9 +60,35 @@ const TeacherInput = () => {
             setErrors(validationErrors);
             return;
         }
-        else {
-            console.log(teacherData);
+
+        try {
+            setLoading(true);
+            // setErrors(null);
+
+            const createdTeacher = await createTeacher(teacherData);
+            console.log('Teacher created:', createdTeacher);
+
+            setTeacherData({
+                title: '',
+                nationalId: '',
+                name: '',
+                surname: '',
+                dateOfBirth: '',
+                teacherNumber: '',
+                salary: '',
+            });
+            setErrors({});
+
+            toast.success('Teacher created successfully!');
+        } catch (error) {
+            console.error('Error creating teacher:', error);
+            toast.error('Error creating teacher');
+        } finally {
+            setLoading(false);
         }
+
+
+
         // Submit the form
     };
 
@@ -103,7 +144,7 @@ const TeacherInput = () => {
                 </div>
 
                 <div className="flex justify-center">
-                    <AuthButton title="Submit" />
+                    <AuthButton title={loading ? 'Loading...' : 'Submit'} disabled={loading} />
                 </div>
                 <div className='mt-3 text-center'>
                     <Link href={'/info/student'} className='font-bold'>

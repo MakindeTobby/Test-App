@@ -2,10 +2,13 @@
 import React, { useState } from 'react';
 import PersonalInfoInput from '@/Components/Forms/ProfileForms';
 import AuthButton from '@/Components/Button/AuthButton';
-import { collection, addDoc } from "firebase/firestore";
-import { db } from '@/app/firebase';
+import Link from 'next/link';
+import { createStudent } from '@/api';
+import { toast } from 'react-toastify';
+
 
 const StudentInput = () => {
+    const [loading, setLoading] = useState(false);
     const [studentData, setStudentData] = useState({
         nationalId: '',
         name: '',
@@ -41,6 +44,14 @@ const StudentInput = () => {
 
         if (studentData.dateOfBirth.trim() === '') {
             validationErrors.dateOfBirth = 'Date of Birth is required';
+        } else {
+            const currentDate = new Date();
+            const selectedDate = new Date(studentData.dateOfBirth);
+            const age = currentDate.getFullYear() - selectedDate.getFullYear();
+
+            if (age > 22) {
+                validationErrors.dateOfBirth = 'Student must be at most 22 years old';
+            }
         }
         if (studentData.studentNumber.trim() === '') {
             validationErrors.studentNumber = 'Number is required';
@@ -53,24 +64,30 @@ const StudentInput = () => {
             // If there are no validation errors, submit the form
             console.log(studentData.nationalId);
         }
-        else {
+        try {
+            setLoading(true);
+            // setErrors(null);
 
-            try {
-                const docRef = await addDoc(collection(db, "students"),
-                    {
-                        DOB: studentData.dateOfBirth,
-                        firstName: studentData.name,
-                        nationalID: studentData.nationalId,
-                        phoneNumber: studentData.studentNumber,
-                        surName: studentData.surname
-                    }
-                );
-                console.log("Document written with ID: ", docRef.id);
-                console.log(studentData);
-            } catch (e) {
-                console.error("Error adding document: ", e);
-            }
+            const createdStaff = await createStudent(studentData);
+            console.log('Staff created:', createdStaff);
+
+            setStudentData({
+                nationalId: '',
+                name: '',
+                surname: '',
+                dateOfBirth: '',
+                studentNumber: '',
+            });
+            setErrors({});
+
+            toast.success('Student created successfully!');
+        } catch (error) {
+            console.error('Error creating student:', error);
+            toast.error('Error creating student');
+        } finally {
+            setLoading(false);
         }
+
     };
 
     return (
@@ -99,8 +116,15 @@ const StudentInput = () => {
                 </div>
 
                 <div className="flex justify-center">
-                    <AuthButton title="Submit" />
+                    <AuthButton title={loading ? 'Loading...' : 'Submit'} disabled={loading} />
                 </div>
+
+                <div className='mt-3 text-center'>
+                    <Link href={'/info/teacher'} className='font-bold'>
+                        Register as Teacher
+                    </Link>
+                </div>
+                <br />
             </form>
         </div>
     );
