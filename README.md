@@ -23,7 +23,7 @@ To run this application locally, follow these steps:
    npm run dev
 The application should now be running at http://localhost:3000.
 
-5. Open a new terminal tab and start json-server for mock data:
+5. Open a new terminal tab and navigate to database directory in the app, start json-server for mock data by running:
   json-server --watch db.json --port 3001
 
 The mock data server will be running at http://localhost:3001.
@@ -46,7 +46,7 @@ The main dependencies used in this project are:
 - json-server: A mock data server that provides RESTful APIs.
 - axios: A promise-based HTTP client for making API requests.
 - react-toastify: A react library for updating success and error message
-
+- Jest: for testing
 
 
    
