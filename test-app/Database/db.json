@@ -29,14 +29,6 @@
       "surname": "Johnson",
       "dateOfBirth": "2000-02-20",
       "studentNumber": "S001"
-    },
-    {
-      "id": 2,
-      "nationalId": "0987123456",
-      "name": "Bob",
-      "surname": "Williams",
-      "dateOfBirth": "2001-07-10",
-      "studentNumber": "S002"
     }
   ]
 }
